@@ -5,11 +5,12 @@
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QMessageBox>
-#include <personalcenter.h>
-#include <writediary.h>
-#include <todolistitem.h>
 #include <QSqlQuery>
 #include <QString>
+#include "personalcenter.h"
+#include "writediary.h"
+#include "todolistitem.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class QtToDoMainWindow; }

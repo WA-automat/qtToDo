@@ -9,7 +9,6 @@ QtToDoMainWindow::QtToDoMainWindow(QWidget *parent)
     // 获取数据库连接
     if (QSqlDatabase::contains("qt_sql_default_connection")) {
         QSqlDatabase db = QSqlDatabase::database("qt_sql_default_connection");
-        db.open();
 //        qDebug() << "数据库已成功连接" << endl;
     } else {
         this->close();
@@ -26,6 +25,31 @@ QtToDoMainWindow::QtToDoMainWindow(QWidget *parent)
     ui->introduce->setText("\n\nQtToDo: \n\n用于编写待办与日记的开源工具软件。\n\nAuthor: 林泽勋\nsince: 2023.10.3\nVersion: v1.0");
     ui->dateTimeEdit->setDateTime(QDateTime::currentDateTime());
 
+    QSqlDatabase db = QSqlDatabase::database("qt_sql_default_connection");
+    // 加载初始的代办列
+    QSqlQuery query;
+    query.prepare("select * from todoTable where isFinished = :isFinished");
+    query.bindValue(":isFinished", false);
+    query.exec();
+    while (query.next()) {
+        QString id = query.value(0).toString();
+        QString content = query.value(1).toString();
+        QDateTime deadline = query.value(2).toDateTime();
+        qDebug() << id << ' ' << content << ' ' << deadline << endl;
+        // 创建一个节点
+        auto listWidgetItem = new QListWidgetItem(id, ui->listWidget);
+        listWidgetItem->setSizeHint(QSize(200, 100));
+        // 存入列表中
+        ui->listWidget->addItem(listWidgetItem);
+        ui->listWidget->setItemWidget(listWidgetItem,
+                                      new ToDoListItem(
+                                          id.toInt(),
+                                          content,
+                                          deadline,
+                                          this
+                                          ));
+    }
+
     // 事件绑定
     // 导航栏事件
     // 退出事件
@@ -34,30 +58,61 @@ QtToDoMainWindow::QtToDoMainWindow(QWidget *parent)
     );
     // 导航栏进入个人中心页面
     connect(ui->actionpersonal, &QAction::triggered, this,
-            []() {
-                auto persenalCenterWidget = new PersonalCenter();
+            [=]() {
+                auto persenalCenterWidget = new PersonalCenter(this);
                 persenalCenterWidget->exec();
             }
     );
     // 导航栏进入写日记页面
     connect(ui->actionwrite, &QAction::triggered, this,
-            []() {
-                auto writeDiaryWidget = new WriteDiary();
+            [=]() {
+                auto writeDiaryWidget = new WriteDiary(this);
                 writeDiaryWidget->exec();
+            }
+    );
+    //  导航栏刷新操作
+    connect(ui->actionrefresh, &QAction::triggered, this,
+            [=]() {
+                this->update();
+                ui->listWidget->clear();
+                QSqlDatabase db = QSqlDatabase::database("qt_sql_default_connection");
+                // 加载初始的代办列
+                QSqlQuery query;
+                query.prepare("select * from todoTable where isFinished = :isFinished");
+                query.bindValue(":isFinished", false);
+                query.exec();
+                while (query.next()) {
+                    QString id = query.value(0).toString();
+                    QString content = query.value(1).toString();
+                    QDateTime deadline = query.value(2).toDateTime();
+                    qDebug() << id << ' ' << content << ' ' << deadline << endl;
+                    // 创建一个节点
+                    auto listWidgetItem = new QListWidgetItem(id, ui->listWidget);
+                    listWidgetItem->setSizeHint(QSize(200, 100));
+                    // 存入列表中
+                    ui->listWidget->addItem(listWidgetItem);
+                    ui->listWidget->setItemWidget(listWidgetItem,
+                                                  new ToDoListItem(
+                                                      id.toInt(),
+                                                      content,
+                                                      deadline,
+                                                      this
+                                                      ));
+                }
             }
     );
     // 按钮事件
     // 按钮进入个人中心页面
     connect(ui->personalPushButton, &QPushButton::clicked, this,
-            []() {
-                auto persenalCenterWidget = new PersonalCenter();
+            [=]() {
+                auto persenalCenterWidget = new PersonalCenter(this);
                 persenalCenterWidget->exec();
             }
     );
     // 按钮进入写日记页面
     connect(ui->writePushButton, &QPushButton::clicked, this,
-            []() {
-                auto writeDiaryWidget = new WriteDiary();
+            [=]() {
+                auto writeDiaryWidget = new WriteDiary(this);
                 writeDiaryWidget->exec();
             }
     );
@@ -77,7 +132,7 @@ QtToDoMainWindow::QtToDoMainWindow(QWidget *parent)
                 QString id = query.lastInsertId().toString();
 
                 // 创建一个节点
-                auto listWidgetItem = new QListWidgetItem(id);
+                auto listWidgetItem = new QListWidgetItem(id, ui->listWidget);
                 listWidgetItem->setSizeHint(QSize(200, 100));
 
                 // 存入列表中
@@ -86,7 +141,8 @@ QtToDoMainWindow::QtToDoMainWindow(QWidget *parent)
                                               new ToDoListItem(
                                                   id.toInt(),
                                                   ui->lineEdit->text(),
-                                                  ui->dateTimeEdit->dateTime()
+                                                  ui->dateTimeEdit->dateTime(),
+                                                  this
                                                   ));
 
                 // 清空 lineEdit

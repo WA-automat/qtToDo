@@ -10,6 +10,8 @@ ToDoListItem::ToDoListItem(int _id, QString _content, QDateTime _datetime, QWidg
     ui->setupUi(this);
     this->setFixedSize(1000, 100);
     ui->label->setText(content + " " + datetime.toString());
+    ui->label->setFixedWidth(800);
+    ui->label->setAlignment(Qt::AlignCenter);
 
     // 事件连接
     // 标记是否完成了该待办的两个事件

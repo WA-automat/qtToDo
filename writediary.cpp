@@ -13,6 +13,13 @@ WriteDiary::WriteDiary(QWidget *parent) :
     // 绑定事件
     connect(ui->submitPushButton, &QPushButton::clicked, this,
             [=]() {
+                if (ui->titleLineEdit->text() == "") {
+                    QMessageBox::warning(this, "警告", "日记标题不能为空");
+                    return;
+                } else if (ui->textEdit->toPlainText() == "") {
+                    QMessageBox::warning(this, "警告", "日记内容不能为空");
+                    return;
+                }
                 QSqlDatabase db = QSqlDatabase::database("qt_sql_default_connection");
                 QSqlQuery query(db);
                 query.prepare("insert into diary(id, title, content, createTime) values(NULL, :title, :content, :createTime)");

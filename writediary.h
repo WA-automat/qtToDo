@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QDateTime>
+#include <QMessageBox>
 #include "diarydetails.h"
 
 namespace Ui {

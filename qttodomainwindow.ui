@@ -18,25 +18,32 @@
     <item>
      <widget class="QWidget" name="leftWidget" native="true">
       <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0">
+       <item row="1" column="0">
         <widget class="QPushButton" name="personalPushButton">
          <property name="text">
           <string>个人中心</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QPushButton" name="writePushButton">
          <property name="text">
           <string>写日记</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
+       <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="introduce">
          <property name="text">
           <string>QtToDo: 
 用于编写待办与日记的工具软件</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="qtToDoTitleLabel">
+         <property name="text">
+          <string>QtToDo</string>
          </property>
         </widget>
        </item>
@@ -161,6 +168,8 @@
     <property name="title">
      <string>其他</string>
     </property>
+    <addaction name="actionrefresh"/>
+    <addaction name="separator"/>
     <addaction name="actionexit"/>
    </widget>
    <addaction name="pageMenu"/>
@@ -185,6 +194,11 @@
   <action name="actionwrite">
    <property name="text">
     <string>写日记</string>
+   </property>
+  </action>
+  <action name="actionrefresh">
+   <property name="text">
+    <string>刷新</string>
    </property>
   </action>
  </widget>

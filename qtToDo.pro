@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QT += sql
+QT += sql charts
 
 CONFIG += c++11
 
@@ -12,6 +12,7 @@ CONFIG += c++11
 
 SOURCES += \
     diarydetails.cpp \
+    diarylistitem.cpp \
     main.cpp \
     personalcenter.cpp \
     qttodomainwindow.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     diarydetails.h \
+    diarylistitem.h \
     personalcenter.h \
     qttodomainwindow.h \
     todolistitem.h \
@@ -27,6 +29,7 @@ HEADERS += \
 
 FORMS += \
     diarydetails.ui \
+    diarylistitem.ui \
     personalcenter.ui \
     qttodomainwindow.ui \
     todolistitem.ui \
