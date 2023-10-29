@@ -76,6 +76,12 @@ PersonalCenter::PersonalCenter(QWidget *parent) :
         todoMp[query.value(0).toDate()]++;
     }
 
+    query.prepare("SELECT createTime FROM diary WHERE createTime >= date('now', '-7 days')");
+    query.exec();
+    while (query.next()) {
+        diaryMp[query.value(0).toDate()]++;
+    }
+
     // 获取当前时间
     QDate currentDate = QDate::currentDate();
     int mx = 0;
