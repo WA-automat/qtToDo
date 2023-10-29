@@ -22,7 +22,7 @@ QtToDoMainWindow::QtToDoMainWindow(QWidget *parent)
     this->setFixedSize(2100, 1200);
     ui->personalPushButton->setFixedSize(300, 200);
     ui->writePushButton->setFixedSize(300, 200);
-    ui->introduce->setText("\n\nQtToDo: \n\n用于编写待办与日记的开源工具软件。\n\nAuthor: 林泽勋\nsince: 2023.10.3\nVersion: v1.0");
+    ui->introduce->setText("\n\nQtToDo: \n\n用于编写待办与日记的开源工具软件。\n\n一个基于Qt开发框架的待办与日记工具软件的设计与实现。\n\n该软件旨在提供一个功能强大且易于使用的工具，\n\n帮助用户有效地管理他们的待办事项和记录个人日记。\n\nAuthor: 林泽勋\n\nsince: 2023.10.3\n\nVersion: v1.0");
     ui->dateTimeEdit->setDateTime(QDateTime::currentDateTime());
 
     QSqlDatabase db = QSqlDatabase::database("qt_sql_default_connection");
